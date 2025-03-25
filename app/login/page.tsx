@@ -90,7 +90,7 @@ export default function LoginForm() {
                     <Field
                       as={Input}
                       id="email"
-                      value={emailFromParams ? emailFromParams : ""}
+                      // value={emailFromParams || ""}
                       type="email"
                       name="email"
                       placeholder="your.email@example.com"

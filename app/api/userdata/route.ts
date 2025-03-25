@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// route hander test
 export async function GET() {
   try {
     const cookieStore = await cookies();

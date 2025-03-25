@@ -18,15 +18,15 @@ const Navbar = () => {
   const { user, loading, logout } = useUserContext();
   return (
     <nav className="sticky top-0 z-40 border-b h-16 px-8 py-4 flex justify-between w-full bg-background">
-      <div className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-2">
         <Shield className="h-6 w-6 text-primary" />
         <span className="text-xl font-bold">SecureAuth</span>
-      </div>
+      </Link>
       <div className="flex items-center gap-4">
-        {user ? (
+        {user && !loading ? (
           <DropdownMenu>
             <DropdownMenuTrigger>
-              <div className="rounded-full w-8 h-8 flex items-center justify-center text-2xl bg-gray-300 p-2">
+              <div className="rounded-full cursor-pointer w-8 h-8 flex items-center justify-center text-2xl bg-gray-300 p-2">
                 <p>{user.name.substring(0, 1).toUpperCase()}</p>
                 {/* <p>{user.name}</p> */}
               </div>

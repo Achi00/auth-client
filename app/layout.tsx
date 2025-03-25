@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { UserContextProvider } from "@/context/userContext";
 import { getUserData } from "@/util/auth";
+import { getServerUser } from "@/util/UserControllers";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,13 +28,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // pass initial user to user context
-  const initialUser = await getUserData();
+  const initialUser = await getServerUser();
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <UserContextProvider initialUser={initialUser}>
+          <Toaster />
+
           <Navbar />
           {children}
         </UserContextProvider>

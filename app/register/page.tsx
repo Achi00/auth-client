@@ -1,54 +1,68 @@
 "use client";
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Lock, Mail, RotateCcw, Shield } from "lucide-react";
+import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import {
+  Lock,
+  LogIn,
+  Mail,
+  MailCheck,
+  MailCheckIcon,
+  RotateCcw,
+  Shield,
+  User,
+} from "lucide-react";
 import Link from "next/link";
-import * as Yup from "yup";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
 import toast from "react-hot-toast";
+import * as Yup from "yup";
 
-interface LoginValues {
+interface RegisterValues {
+  name: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
-const LoginSchema = Yup.object().shape({
+const registerSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
-  password: Yup.string().required("Password is required"),
+  password: Yup.string().min(6, "Too short").required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match")
+    .required("Password does not match"),
 });
 
-export default function LoginForm() {
+const page = () => {
   const [error, setError] = useState<string | null>(null);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [email, setEmail] = useState<string>("");
+
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const emailFromParams = searchParams.get("email");
-
-  useEffect(() => {
-    if (emailFromParams) {
-      toast.success("Email Autofill completed");
-    }
-  }, [emailFromParams]);
 
   const handleSubmit = async (
-    values: LoginValues,
-    { setSubmitting }: FormikHelpers<LoginValues>
+    values: RegisterValues,
+    { setSubmitting }: FormikHelpers<RegisterValues>
   ) => {
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(values),
       });
 
       if (response.ok) {
-        router.push("/dashboard");
+        toast.success("User registered seccesfully");
+        setIsRegistered(true);
+        setEmail(values.email);
+        //toast
       } else {
         const data = await response.json();
+        console.log(data);
         setError(data.error || "An error occurred during login");
       }
     } catch (err) {
@@ -58,28 +72,80 @@ export default function LoginForm() {
     }
   };
 
+  const handleNavigate = () => {
+    // navigate to /login page auto fill email field
+    if (email !== "") {
+      router.push(`/login?email=${email}`);
+    } else {
+      router.push("/login");
+    }
+  };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4">
       <div className="container flex items-center justify-center py-12 md:py-24">
         <div className="w-full max-w-md space-y-8">
           <div className="space-y-2 text-center">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl">
-              Sign in
+              Register with SecuteAuth
             </h1>
             <p className="text-muted-foreground">Access your secure account</p>
           </div>
+          {isRegistered && (
+            <Alert>
+              <MailCheck className="h-4 w-4" />
+              <AlertTitle>Email Registered</AlertTitle>
+              <AlertDescription className="flex flex-col">
+                <p>
+                  Please check your inbox and verify your email address to
+                  complete the registration process.
+                </p>
+                <Button
+                  onClick={handleNavigate}
+                  className="self-end cursor-pointer text-black"
+                  variant="outline"
+                >
+                  <LogIn />
+                  Log In
+                </Button>
+              </AlertDescription>
+            </Alert>
+          )}
 
           <div className="rounded-lg border bg-card p-6 shadow-sm">
             <Formik
               initialValues={{
-                email: emailFromParams ? emailFromParams : "",
+                name: "",
+                email: "",
                 password: "",
+                confirmPassword: "",
               }}
-              validationSchema={LoginSchema}
+              validationSchema={registerSchema}
               onSubmit={handleSubmit}
             >
               {({ isSubmitting }) => (
                 <Form className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex items-center">
+                      <User className="mr-2 h-4 w-4 text-muted-foreground" />
+                      <label htmlFor="name" className="text-sm font-medium">
+                        Name
+                      </label>
+                    </div>
+                    <Field
+                      as={Input}
+                      id="name"
+                      type="text"
+                      name="name"
+                      placeholder="Your name"
+                      className="w-full"
+                    />
+                    <ErrorMessage
+                      name="name"
+                      component="div"
+                      className="text-destructive text-sm"
+                    />
+                  </div>
+
                   <div className="space-y-2">
                     <div className="flex items-center">
                       <Mail className="mr-2 h-4 w-4 text-muted-foreground" />
@@ -90,7 +156,6 @@ export default function LoginForm() {
                     <Field
                       as={Input}
                       id="email"
-                      value={emailFromParams ? emailFromParams : ""}
                       type="email"
                       name="email"
                       placeholder="your.email@example.com"
@@ -117,11 +182,37 @@ export default function LoginForm() {
                       type="password"
                       name="password"
                       placeholder="••••••••"
-                      autoComplete="current-password"
+                      autoComplete="new-password"
                       className="w-full"
                     />
                     <ErrorMessage
                       name="password"
+                      component="div"
+                      className="text-destructive text-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <div className="flex items-center">
+                      <Lock className="mr-2 h-4 w-4 text-muted-foreground" />
+                      <label
+                        htmlFor="confirmPassword"
+                        className="text-sm font-medium"
+                      >
+                        Confirm Password
+                      </label>
+                    </div>
+                    <Field
+                      as={Input}
+                      id="confirmPassword"
+                      type="password"
+                      name="confirmPassword"
+                      placeholder="••••••••"
+                      autoComplete="new-password"
+                      className="w-full"
+                    />
+                    <ErrorMessage
+                      name="confirmPassword"
                       component="div"
                       className="text-destructive text-sm"
                     />
@@ -136,9 +227,9 @@ export default function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full"
+                    className="w-full cursor-pointer"
                   >
-                    {isSubmitting ? "Signing in..." : "Sign in"}
+                    {isSubmitting ? "Creating account..." : "Create Account"}
                   </Button>
                 </Form>
               )}
@@ -168,7 +259,7 @@ export default function LoginForm() {
           <div className="text-center">
             <Link
               href="/register"
-              className="text-sm font-semibold text-black hover:text-foreground"
+              className="text-sm text-muted-foreground hover:text-foreground"
             >
               Don't have an account? Create one
             </Link>
@@ -202,4 +293,6 @@ export default function LoginForm() {
       </footer>
     </div>
   );
-}
+};
+
+export default page;

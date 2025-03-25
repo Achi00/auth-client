@@ -1,7 +1,7 @@
 "use client";
 import { UserContextType } from "@/types/ContextType";
 import { UserType } from "@/types/UserType";
-import { fetchUser } from "@/util/UserControllers";
+import { getServerUser } from "@/util/UserControllers";
 import { usePathname, useRouter } from "next/navigation";
 import {
   createContext,
@@ -32,7 +32,7 @@ export function UserContextProvider({
     const handleRouteChange = async () => {
       try {
         setLoading(true);
-        const user = await fetchUser();
+        const user = await getServerUser();
         if (user !== null) {
           setUser(user);
         }

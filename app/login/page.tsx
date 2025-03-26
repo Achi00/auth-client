@@ -136,7 +136,7 @@ export default function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full"
+                    className="w-full cursor-pointer"
                   >
                     {isSubmitting ? "Signing in..." : "Sign in"}
                   </Button>

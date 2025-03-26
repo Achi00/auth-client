@@ -1,5 +1,12 @@
 "use client";
-import { LogOutIcon, Shield } from "lucide-react";
+import {
+  ChevronDown,
+  LogOutIcon,
+  Settings,
+  Shield,
+  ShieldUser,
+  User,
+} from "lucide-react";
 import React from "react";
 import { Button } from "./ui/button";
 import Link from "next/link";
@@ -25,22 +32,47 @@ const Navbar = () => {
       <div className="flex items-center gap-4">
         {user && !loading ? (
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="rounded-full cursor-pointer w-8 h-8 flex items-center justify-center text-2xl bg-gray-300 p-2">
-                <p>{user.name.substring(0, 1).toUpperCase()}</p>
-                {/* <p>{user.name}</p> */}
+            <DropdownMenuTrigger className="flex items-center gap-2 mr-5 border rounded-lg py-2 px-4 cursor-pointer">
+              <div className="rounded-full cursor-pointer w-8 h-8 flex items-center justify-center bg-gray-300 p-2">
+                <User />
               </div>
+              <p className="text-xl">{user.name}</p>
+              <ChevronDown className="h-4 w-4 opacity-50" />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">
+                    {user.name}
+                  </p>
+                  {user.email && (
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  )}
+                </div>
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Profile</DropdownMenuItem>
-              <DropdownMenuItem>API</DropdownMenuItem>
-              <DropdownMenuItem>Team</DropdownMenuItem>
+              <div className="text-xl">
+                <DropdownMenuItem className="text-lg">
+                  <Link className="flex gap-3 items-center" href="/profile">
+                    <ShieldUser />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="text-lg">
+                  <Link className="flex gap-3 items-center" href="/auth-api">
+                    <Settings />
+                    API
+                  </Link>
+                </DropdownMenuItem>
+              </div>
               <div className="w-full border-t-2"></div>
               <DropdownMenuItem onClick={logout}>
-                <LogOutIcon />
-                <span className="font-semibold">Log out</span>
+                <div className="flex gap-2 items-center justify-center text-red-600 text-lg cursor-pointer h-10">
+                  <LogOutIcon color="red" />
+                  <span className="font-semibold">Log out</span>
+                </div>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

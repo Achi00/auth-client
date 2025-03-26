@@ -6,6 +6,7 @@ import { UserContextProvider } from "@/context/userContext";
 import { getUserData } from "@/util/auth";
 import { getServerUser } from "@/util/UserControllers";
 import { Toaster } from "react-hot-toast";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default async function RootLayout({
 
           <Navbar />
           {children}
+          <Footer />
         </UserContextProvider>
       </body>
     </html>

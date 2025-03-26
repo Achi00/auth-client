@@ -9,7 +9,7 @@ const page = async () => {
   if (!user) {
     redirect("/login");
   }
-  return <div>{user.email}</div>;
+  return <div className="min-h-screen">{user.email}</div>;
 };
 
 export default page;

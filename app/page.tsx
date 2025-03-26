@@ -1,21 +1,38 @@
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { UserType } from "@/types/UserType";
+import { getServerUser } from "@/util/UserControllers";
 import {
   ArrowRight,
   CheckCircle,
+  FileText,
+  Info,
   Lock,
   Mail,
   RefreshCw,
-  Shield,
+  Settings,
+  Terminal,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const user = (await getServerUser()) as UserType;
   return (
     <div className="flex min-h-screen flex-col w-full items-center">
       <main className="flex-1">
         {/* Hero Section */}
         <section className="container py-24 md:py-32">
+          <div className="w-full flex justify-center pb-12">
+            <Alert className="w-1/3">
+              <Info className="h-4 w-4" />
+              <AlertTitle>API Comming soon</AlertTitle>
+              <AlertDescription>
+                API Is under development, current version of app demonstrates
+                capabilities of registration, authentication, password reset,
+                email verification and more.
+              </AlertDescription>
+            </Alert>
+          </div>
           <div className="grid gap-10 md:grid-cols-2 md:gap-16">
             <div className="flex flex-col justify-center space-y-6">
               <div className="space-y-2">
@@ -28,14 +45,32 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex flex-col gap-2 sm:flex-row">
-                <Button asChild size="lg">
-                  <Link href="/register">
-                    Create Account <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button variant="outline" size="lg">
-                  <Link href="/login">Sign In</Link>
-                </Button>
+                {user ? (
+                  <>
+                    <Button asChild size="lg">
+                      <Link href="/dashboard">
+                        View Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="lg">
+                      <Link href="/api-docs" className="flex item-center gap-2">
+                        <FileText />
+                        Check API Docs
+                      </Link>
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button asChild size="lg">
+                      <Link href="/register">
+                        Create Account <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <Button variant="outline" size="lg">
+                      <Link href="/login">Sign In</Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
             <div className="flex items-center justify-center">
@@ -260,31 +295,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="border-t py-8">
-        <div className="container flex flex-col items-center justify-between gap-4 md:flex-row">
-          <div className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-primary" />
-            <span className="font-semibold">SecureAuth</span>
-          </div>
-          <p className="text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} SecureAuth. All rights reserved.
-          </p>
-          <div className="flex gap-4">
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground hover:text-foreground"
-            >
-              Privacy
-            </Link>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

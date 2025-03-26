@@ -6,6 +6,7 @@ import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import {
   Lock,
   LogIn,
+  LogInIcon,
   Mail,
   MailCheck,
   MailCheckIcon,
@@ -242,16 +243,16 @@ const page = () => {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background px-2 text-muted-foreground">
-                Forgot Password?
+                Already Have Account?
               </span>
             </div>
           </div>
 
           <div className="space-y-4">
             <Button asChild variant="outline" className="w-full">
-              <Link href="/reset" className="flex items-center justify-center">
-                <RotateCcw className="mr-2 h-4 w-4" />
-                Reset Password
+              <Link href="/login" className="flex items-center justify-center">
+                <LogInIcon className="mr-2 h-4 w-4" />
+                Login
               </Link>
             </Button>
           </div>

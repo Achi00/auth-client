@@ -54,9 +54,9 @@ const Navbar = () => {
               <DropdownMenuSeparator />
               <div className="text-xl">
                 <DropdownMenuItem className="text-lg">
-                  <Link className="flex gap-3 items-center" href="/profile">
+                  <Link className="flex gap-3 items-center" href="/dashboard">
                     <ShieldUser />
-                    Profile
+                    Dashboard
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="text-lg">

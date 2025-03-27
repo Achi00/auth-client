@@ -3,17 +3,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import {
-  Lock,
-  LogIn,
-  LogInIcon,
-  Mail,
-  MailCheck,
-  MailCheckIcon,
-  RotateCcw,
-  Shield,
-  User,
-} from "lucide-react";
+import { Lock, LogIn, LogInIcon, Mail, MailCheck, User } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -57,10 +47,9 @@ const page = () => {
       });
 
       if (response.ok) {
-        toast.success("User registered seccesfully");
         setIsRegistered(true);
         setEmail(values.email);
-        //toast
+        toast.success("User registered seccesfully");
       } else {
         const data = await response.json();
         console.log(data);

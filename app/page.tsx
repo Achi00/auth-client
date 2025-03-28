@@ -268,6 +268,37 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
+              <div className="grid gap-8 md:grid-cols-2 md:flex-row-reverse">
+                <div className="flex flex-col justify-center space-y-4 md:order-2">
+                  <h3 className="text-2xl font-bold">4. Reset Password</h3>
+                  <p className="text-muted-foreground">
+                    A secure encrypted token is sent to the user's email. By
+                    clicking you will be redirected to password reset page,
+                    token can be used only once.
+                  </p>
+                </div>
+                <div className="rounded-lg border bg-background p-6 shadow-sm md:order-1">
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-2">
+                      <Mail className="h-5 w-5 text-primary" />
+                      <div className="font-medium">Forgot Password?</div>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm">
+                        Please open token url we send you on email. After that
+                        you will be redirected to reset form
+                      </p>
+                      <p className="text-sm">
+                        Token url will be valid for only one use, after that it
+                        will be set as expired.
+                      </p>
+                    </div>
+                    <button className="rounded-md bg-primary/80 px-4 py-2 text-sm font-medium text-primary-foreground">
+                      Reset password
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

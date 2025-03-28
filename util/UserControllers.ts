@@ -10,7 +10,8 @@ export const getServerUser = async () => {
 
     if (!encryptedData) return null;
 
-    const decrypted = decrypt(encryptedData);
+    // const decrypted = decrypt(encryptedData);
+    const decrypted = await decrypt(encryptedData);
     return JSON.parse(decrypted) as UserType;
   } catch (error) {
     console.error("Server auth error:", error);

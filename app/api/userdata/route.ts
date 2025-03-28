@@ -11,11 +11,11 @@ export async function POST(request: NextRequest) {
 
     if (userData) {
       // Encrypt the user data
-      const encrypted = encrypt(JSON.stringify(userData));
+      const encrypted = await encrypt(JSON.stringify(userData));
       return NextResponse.json({ encryptedData: encrypted });
     } else if (encryptedData) {
       // Decrypt the user data
-      const decrypted = decrypt(encryptedData);
+      const decrypted = await decrypt(encryptedData);
       return NextResponse.json({ userData: JSON.parse(decrypted) });
     } else {
       return NextResponse.json({ error: "Invalid request" }, { status: 400 });
@@ -36,7 +36,7 @@ export async function GET() {
       return NextResponse.json({ userData: null }, { status: 401 });
     }
 
-    const decryptedData = decrypt(encryptedData);
+    const decryptedData = await decrypt(encryptedData);
     return NextResponse.json({ userData: JSON.parse(decryptedData) });
   } catch (error) {
     console.error("Error decrypting user data:", error);

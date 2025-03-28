@@ -12,21 +12,21 @@ const Footer = () => {
       <div className="links">
         <div className="flex gap-6">
           <Link
-            href="/api"
+            href="/auth-api"
             className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
           >
             <Settings />
             API
           </Link>
           <Link
-            href="/contact"
+            href="#"
             className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
           >
             <Headset />
             Contact
           </Link>
           <Link
-            href="/terms"
+            href="#"
             className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1"
           >
             <NotepadText />

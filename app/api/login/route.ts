@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   });
 
   // Encrypt and store user data in a cookie
-  const encryptedUserData = encrypt(JSON.stringify(user));
+  const encryptedUserData = await encrypt(JSON.stringify(user));
   cookieStore.set("userData", encryptedUserData, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

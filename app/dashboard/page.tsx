@@ -9,6 +9,9 @@ import React from "react";
 
 const page = async () => {
   const user = (await getServerUser()) as UserType;
+  if (!user) {
+    redirect("/login");
+  }
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
       <div className="flex flex-col items-center gap-10 text-3xl font-semibold">

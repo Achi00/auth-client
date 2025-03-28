@@ -3,10 +3,11 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { UserContextProvider } from "@/context/userContext";
-import { getUserData } from "@/util/auth";
 import { getServerUser } from "@/util/UserControllers";
 import { Toaster } from "react-hot-toast";
 import Footer from "@/components/Footer";
+import { Suspense } from "react";
+import Loading from "@/loading";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,13 +36,14 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <UserContextProvider initialUser={initialUser}>
-          <Toaster />
-
-          <Navbar />
-          {children}
-          <Footer />
-        </UserContextProvider>
+        <Suspense fallback={<Loading />}>
+          <UserContextProvider initialUser={initialUser}>
+            <Toaster />
+            <Navbar />
+            {children}
+            <Footer />
+          </UserContextProvider>
+        </Suspense>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardHeader } from "@/components/ui/card";
-import { useUserContext } from "@/context/userContext";
+
 import { UserType } from "@/types/UserType";
 import { getServerUser } from "@/util/UserControllers";
 import { Info, ShieldCheck } from "lucide-react";

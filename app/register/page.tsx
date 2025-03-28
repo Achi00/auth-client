@@ -2,8 +2,17 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useUserContext } from "@/context/userContext";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
-import { Lock, LogIn, LogInIcon, Mail, MailCheck, User } from "lucide-react";
+import {
+  AlertCircle,
+  Lock,
+  LogIn,
+  LogInIcon,
+  Mail,
+  MailCheck,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -32,8 +41,13 @@ const page = () => {
   const [error, setError] = useState<string | null>(null);
   const [isRegistered, setIsRegistered] = useState(false);
   const [email, setEmail] = useState<string>("");
+  const { user, loading } = useUserContext();
 
   const router = useRouter();
+
+  if (user) {
+    router.push("/");
+  }
 
   const handleSubmit = async (
     values: RegisterValues,
@@ -209,9 +223,11 @@ const page = () => {
                   </div>
 
                   {error && (
-                    <div className="rounded-md bg-destructive/10 p-3 text-destructive text-sm">
-                      {error}
-                    </div>
+                    <Alert variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertTitle>Error</AlertTitle>
+                      <AlertDescription>{error}</AlertDescription>
+                    </Alert>
                   )}
 
                   <Button

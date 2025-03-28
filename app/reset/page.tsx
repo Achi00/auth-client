@@ -4,10 +4,19 @@ import { useState } from "react";
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from "formik";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { LogIn, MailCheck, Send, Shield, Loader2 } from "lucide-react";
+import {
+  LogIn,
+  MailCheck,
+  Send,
+  Shield,
+  Loader2,
+  AlertCircle,
+} from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import Link from "next/link";
 import * as Yup from "yup";
+import { useRouter } from "next/navigation";
+import { useUserContext } from "@/context/userContext";
 
 interface ResetValues {
   email: string;
@@ -22,6 +31,13 @@ const ResetSchema = Yup.object().shape({
 export default function ResetPasswordPage() {
   const [error, setError] = useState<string | null>(null);
   const [emailSent, setEmailSent] = useState(false);
+  const { user } = useUserContext();
+
+  const router = useRouter();
+
+  if (user) {
+    router.push("/");
+  }
 
   const handleSubmit = async (
     values: ResetValues,
@@ -106,9 +122,11 @@ export default function ResetPasswordPage() {
                     </div>
 
                     {error && (
-                      <div className="rounded-md bg-destructive/10 p-3 text-destructive text-sm">
-                        {error}
-                      </div>
+                      <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Error</AlertTitle>
+                        <AlertDescription>{error}</AlertDescription>
+                      </Alert>
                     )}
 
                     <Button
